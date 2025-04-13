@@ -99,6 +99,7 @@ proc runServer(ctx: Ctx) =
   ) =
     case event:
     of OpenEvent:
+      echo "websocket opened"
       discard
     of MessageEvent:
       discard
@@ -107,6 +108,11 @@ proc runServer(ctx: Ctx) =
     of CloseEvent:
       discard
 
+  proc upgradeHandler(request: Request) =
+    let websocket = request.upgradeToWebSocket()
+    websocket.send("Hello world from WebSocket!")
+
+  router.get("/ws", upgradeHandler)
   router.get("/**", assetHandler)
 
   let server = newServer(router, websocketHandler)
@@ -116,7 +122,7 @@ proc runServer(ctx: Ctx) =
 const defaults = Ctx(
   silent: false,
   serveDir: "./public",
-  port: 3000,
+  port: 8080,
   dev: false,
 )
 

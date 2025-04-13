@@ -1,17 +1,37 @@
-## Websockets support for the JSON backend.
+# TODO: 
+# when defined(emscripten) ...
+import emscripten/websocket
 
-type
-  MessageEvent* {.importc.} = ref object
-    data*: cstring
+type WebSocket* = distinct cint
 
-  WebSocket* {.importc.} = ref object
-    onmessage*: proc (e: MessageEvent)
-    onopen*: proc (e: MessageEvent)
+template check(body: untyped) =
+  # TODO: raise exception
+  doAssert body == 0
 
-proc newWebSocket*(url, key: cstring): WebSocket
-  {.importcpp: "new WebSocket(@)".}
+proc newWebSocket*(url: string, protocol: string = ""): Websocket = 
+  var createParams = EmscriptenWebSocketCreateAttributes(
+    url: url,
+    protocols: if protocol == "":
+      nil
+    else:
+      protocol,
+    createOnMainThread: true,
+  )
+  WebSocket(emscripten_websocket_new(createParams.addr))
 
-proc newWebSocket*(url: cstring): WebSocket
-  {.importcpp: "new WebSocket(@)".}
+proc send*(w: WebSocket, data: openArray[char]) =
+  check emscripten_websocket_send_binary(w.cint, data[0].addr, data.len.uint32)
 
-proc send*(w: WebSocket; data: cstring) {.importcpp.}
+# assume UTF-8 encoded
+proc send*(w: WebSocket, data: cstring) =
+  check emscripten_websocket_send_utf8_text(w.cint, data)
+
+proc close*(w: WebSocket) =
+  check emscripten_close(w, )
+
+proc delete*(w: WebSocket) =
+  check emscripten_delete(w)
+
+proc `=destroy`(w: WebSocket) =
+  close(w)
+  delete(w)

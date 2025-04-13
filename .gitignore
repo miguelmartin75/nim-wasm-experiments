@@ -2,3 +2,4 @@ public/index.*
 build/**
 wasmrt/
 nimble.paths
+nimble.develop

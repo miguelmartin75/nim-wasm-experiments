@@ -25,6 +25,7 @@ if defined(emscripten):
 
   # Pass this to Emscripten linker to generate html file scaffold for us.
   switch("passL", "-o public/index.html --shell-file src/shell.html")
+  switch("passL", "-lwebsocket.js")
 elif defined(wasm):
   switch("out", "public/" & projectName & ".wasm")
   --os:linux

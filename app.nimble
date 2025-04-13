@@ -17,4 +17,5 @@ requires "webby"
 requires "crunchy"
 requires "sokol"
 
-requires "wasmrt"
+# requires "wasmrt"
+requires "jsbind"
