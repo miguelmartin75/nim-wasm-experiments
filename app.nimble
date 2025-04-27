@@ -10,7 +10,7 @@ binDir        = "build"
 
 # Dependencies
 requires "nim >= 2.0.2"
-requires "cligen"
+requires "cligen == 1.8.3"
 requires "karax"
 requires "mummy"
 requires "webby"

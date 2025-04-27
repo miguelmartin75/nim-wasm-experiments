@@ -3,8 +3,8 @@ import sokol/app as sapp
 import sokol/gfx as sg
 import sokol/glue as sglue
 
-# import jwebsockets
-import ws
+import jwebsockets
+# import ws
 
 var 
   passAction = PassAction(
@@ -23,12 +23,11 @@ proc init() {.cdecl.} =
     of backendMetalMacos: echo "using Metal backend"
     else: echo "using untested backend"
 
-  # TODO: /ws ?
   s = newWebSocket("/ws")
+  s.send("hello")
 
 proc frame() {.cdecl.} =
   var g = passAction.colors[0].clearValue.g + 0.01
-  # ws.send("hello")
   # passAction.colors[0].clearValue.g = if g > 1.0: 0.0 else: g
   beginPass(Pass(action: passAction, swapchain: sglue.swapchain()))
   endPass()

@@ -23,8 +23,18 @@ nim -d:emscripten c src/app.nim
 nim c -d:wasm src/t_wasmrt.nim
 ```
 
+Visit http://localhost:3000/t_wasmrt
 
-## notes
+
+## references
 - https://surma.dev/things/c-to-webassembly/
 - wasmrt: https://github.com/yglukhov/wasmrt
 - https://github.com/aduros/wasm4/pull/167/files
+- https://aransentin.github.io/cwasm/
+
+
+## notes
+
+rough edges:
+- emscripten websocket API is not async, but [ws](https://github.com/treeform/ws) is.
+- Separate JS bindings need to be made with jsbind/wasmrt when compiling to WASM via emscripten or emscripten-less

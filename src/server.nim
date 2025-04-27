@@ -102,6 +102,7 @@ proc runServer(ctx: Ctx) =
       echo "websocket opened"
       discard
     of MessageEvent:
+      echo "message: ", message
       discard
     of ErrorEvent:
       discard
